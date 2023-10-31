@@ -16,24 +16,14 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry2 = new THREE.TorusGeometry(10, 1, 16, 100);
-const geometry3 = new THREE.TorusGeometry(5, 1, 16, 100);
 const Planegeometry = new THREE.PlaneGeometry(50, 50);
 const Planematerial = new THREE.MeshBasicMaterial({
   color: 0xffff00,
   side: THREE.DoubleSide,
 });
-const material = new THREE.MeshStandardMaterial({ color: 0x0000ff });
-const material2 = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-const torus = new THREE.Mesh(geometry2, material2);
-const torus2 = new THREE.Mesh(geometry3, material);
 const plane = new THREE.Mesh(Planegeometry, Planematerial);
-//const light = new THREE.AmbientLight( 0xffffff );
 const Dlight = new THREE.DirectionalLight(0xffffff, 3);
 const Dlight2 = new THREE.DirectionalLight(0xffffff, 3);
-//scene.add( light );
-const Dhelper = new THREE.DirectionalLightHelper(Dlight);
-const Dhelper2 = new THREE.DirectionalLightHelper(Dlight2);
 
 const loader = new GLTFLoader();
 let smurf;
@@ -57,8 +47,6 @@ controls.update();
 scene.add(Dlight);
 scene.add(Dlight2);
 
-scene.add(torus);
-scene.add(torus2);
 scene.add(plane);
 plane.rotation.x = Math.PI / 2;
 
@@ -70,26 +58,25 @@ Dlight2.position.y = 0;
 
 function animate() {
   requestAnimationFrame(animate);
-
-  torus.rotation.x += 0.005;
-  torus.rotation.y += 0.005;
-  torus2.rotation.x -= 0.01;
-  torus2.rotation.y -= 0.01;
   renderer.render(scene, camera);
 }
 window.onkeydown = function (e) {
   console.log(e.code);
   if (e.code === "ArrowDown") {
-    smurf.position.x -= 1;
+    smurf.position.z -= 1;
+    smurf.rotation.y = Math.PI;
     e.preventDefault();
   } else if (e.code === "ArrowRight") {
-    smurf.position.x += 1;
+    smurf.position.x -= 1;
+    smurf.rotation.y = 2 * Math.PI - Math.PI / 2;
     e.preventDefault();
   } else if (e.code === "ArrowLeft") {
-    smurf.position.z -= 1;
+    smurf.position.x += 1;
+    smurf.rotation.y = Math.PI / 2;
     e.preventDefault();
-  } else if (e.keyCode === "ArrowUp") {
+  } else if (e.code === "ArrowUp") {
     smurf.position.z += 1;
+    smurf.rotation.y = 2 * Math.PI;
     e.preventDefault();
   }
 };
